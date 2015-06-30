@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SCRIPT TEST</title>
+    </head>
+    <body>
+        <canvas id="##" width="800" height="300" style="color:white;background-color:black;">         </canvas>
+    </body>
+    <script>
+        var posx=300;
+        var posy=150;
+        var eposx=[];
+        var eposy=[];
+        var c=document.getElementById("##");
+        var ctx=c.getContext("2d");
+        document.addEventListener("keydown",function(event));
+        function init()
+        {
+            for(i=0;i<1000;++i)
+            {
+                eposx[i]=Math.floor((Math.random()*800)+500);
+                eposy[i]=Math.floor(Math.random()*300);
+            }
+            setInterval(loopers,10);
+        }
+        function loopers()
+        {
+            ctx.fillStyle="#110044";
+            for(i=0;i<1000;++i)
+            {
+             if(eposx[i]<0){eposx[i]=Math.floor((Math.random()*800)+500);continue;}
+                if(eposx[i]<800){ctx.fillRect(eposx[i]-5,eposy[i]-5,10,10);}
+                eposx[i]--;
+            }
+        }
+        ctx.fillStyle="#005555";
+        ctx.fillRect(posx-10,posy-10,20,20);
+        function(event)
+        {
+            ctx.fillStyle="#005555";
+            if(event.keyCode==87||event.keyCode==38)
+            {
+                if(posy!=10){posy-=5;ctx.clearRect(0, 0, c.width, c.height);}
+                ctx.fillRect(posx-10,posy-10,20,20);
+            }
+            else if(event.keyCode==83||event.keyCode==40)
+            {
+                if(posy!=290){posy+=5;ctx.clearRect(0, 0, c.width, c.height);}
+                ctx.fillRect(posx-10,posy-10,20,20);
+            }
+        }
+        init();
+    </script>
+</html>
