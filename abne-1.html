@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SCRIPT TEST</title>
+    </head>
+    <body>
+        <canvas id="##" width="800" height="300" style="color:white;background-color:black;border:2px solid orange;border-radius:10px;">         </canvas>
+        <div id='mm' style="font-family:Verdana;font-size:16px;color:black;background-color:orange;width:150px;height:20px;border-radius:2px;"></div>
+        <div style="color:white;background-color:black;width:800px;height:130px;border:2px solid orange;border-radius:10px;">
+        <p style='font-family:Verdana'><strong>Instructions:</strong></p>
+        <p style="font-family:Consolas">'Asteroid Belt Navigation Exercise' -my first JavaScript Game! Use Up/Down OR W/S keys to evade. Each collision resets your score. Your aim is to maximize the score.</p>
+            <p style="font-family:Arial">&copy;Capsule Corporation, 2015</p>
+        </div>
+    </body>
+    <script>
+        var posx=300;
+        var posy=150;
+        var eposx=[];
+        var eposy=[];
+        var score=0;
+        var m=0;
+        var c=document.getElementById("##");
+        var ctx=c.getContext("2d");
+        document.addEventListener("keydown",function(event)
+        {
+            ctx.fillStyle="#005555";
+            if(event.keyCode==87||event.keyCode==38)
+            {
+                if(posy!=15){posy-=5;}
+            }
+            else if(event.keyCode==83||event.keyCode==40)
+            {
+                if(posy!=285){posy+=5;}
+            }
+        });
+        function init()
+        {
+            for(i=0;i<100;++i)
+            {
+                eposx[i]=Math.floor((Math.random()*800)+500);
+                eposy[i]=Math.floor(Math.random()*300);
+            }
+            ctx.font="16px Calibri";
+            setInterval(loopers,30);
+        }
+        function loopers()
+        {
+            ++score;
+            ctx.clearRect(0,0,c.width,c.height);
+            ctx.fillStyle="#0044FF";
+            ctx.fillRect(posx-10,posy-15,20,10);
+            ctx.fillRect(posx-3,posy-5,6,10);
+            ctx.fillRect(posx-10,posy+5,20,10);
+            ctx.fillStyle="#FFFFFF";
+            for(i=0;i<100;++i)
+            {
+             if(eposx[i]<0){eposx[i]=Math.floor((Math.random()*800)+500);continue;}
+                if(eposx[i]<800)
+                {
+                    ctx.fillRect(eposx[i]-1,eposy[i]-1,2,2);
+                    if(eposx[i]>posx-10&&eposx[i]<posx+10)
+                        if(eposy[i]>posy-15&&eposy[i]<posy+15)
+                        {score=0;}
+                }
+                eposx[i]--;
+            }
+            if(score>m){m=score;document.getElementById('mm').innerHTML="Max: "+m;}
+            ctx.fillText(score,50,280);
+            ctx.fillText("[ABNE]",750,280);
+        }
+        (init());
+    </script>
+</html>
