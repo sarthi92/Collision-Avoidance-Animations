@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SCRIPT TEST</title>
+    </head>
+    <body>
+        <canvas id="##" width="800" height="300" style="color:green;background-color:black;border:2px solid green;border-radius:10px;"></canvas>
+       <div id='mm' style="font-family:Verdana;font-size:16px;color:#66FF00;background-color:black;width:150px;height:20px;border-radius:2px;"><button id='#' onclick='init()'>Click here to Start.......</button></div>
+        <div style="color:white;background-color:black;width:800px;height:150px;border:2px solid green;border-radius:10px;">
+        <p style='font-family:Verdana'><strong>Nanobots Weapons Training Exercise</strong></p>
+        <p style="font-family:Agency FB">INSTRUCTIONS:<br/>Use W/S/A/D keys to evade. Press Enter to fire Graviton Gun.<br/>Each collision resets your score. Your aim is to maximize the score.<br/>&copy;Capsule Corporation, 2015</p>
+        </div>
+    </body>
+    <script>
+        var posx=300;
+        var posy=150;
+        var eposx=[];
+        var eposy=[];
+        var behav=[];
+        var score=0;
+        var m=0;
+        var c=document.getElementById("##");
+        var ctx=c.getContext("2d");
+        document.addEventListener("keydown",function(event)
+        {
+            ctx.fillStyle="#005555";
+            if(event.keyCode==87)
+            {
+                if(posy!=15){posy-=5;}
+            }
+            else if(event.keyCode==83)
+            {
+                if(posy!=285){posy+=5;}
+            }
+            if(event.keyCode==65)
+            {
+                if(posx!=285){posx-=5;}
+            }
+            else if(event.keyCode==68)
+            {
+                if(posx!=315){posx+=5;}
+            }
+            else if(event.keyCode==13)
+            {
+                ctx.fillStyle="#0000FF";
+                ctx.fillRect(posx+3,posy-3,799-posx-3,6);
+                for(i=0;i<100;++i)
+                {
+                    if(eposy[i]>=posy-20&&eposy[i]<=posy+20&&eposx[i]>=posx+3&&eposx[i]<=799)
+                    {eposy[i]=posy;behav[i]=1;}
+                }
+            }
+            
+        });
+        function init()
+        {
+            document.getElementById("#").style.display='none';
+            for(i=0;i<100;++i)
+            {
+                eposx[i]=Math.floor((Math.random()*800)+500);
+                eposy[i]=Math.floor(Math.random()*300);
+                behav[i]=Math.floor(Math.random()*3);
+            }
+            ctx.font="16px Calibri";
+            setInterval(loopers,70);
+        }
+        function loopers()
+        {
+            ++score;
+            ctx.clearRect(0,0,c.width,c.height);
+            ctx.fillStyle="#009966";
+            ctx.fillRect(posx-10,posy-12,20,6);
+            ctx.fillRect(posx-3,posy-3,6,6);
+            ctx.fillRect(posx-10,posy+6,20,6);
+            ctx.fillStyle="#FF0000";
+            for(i=0;i<100;++i)
+            {
+             if(eposx[i]<0){
+                 eposx[i]=Math.floor((Math.random()*800)+500);
+                 behav[i]=Math.floor(Math.random()*3);
+                 continue;}
+                if(eposx[i]<800)
+                {
+                    ctx.fillRect(eposx[i]-1,eposy[i]-1,2,2);
+                    if(eposx[i]>posx-10&&eposx[i]<posx+10)
+                        if(eposy[i]>posy-12&&eposy[i]<posy+12)
+                        {score=0;} 
+                }
+                eposx[i]--;
+                if(behav[i]==0){eposy[i]--;if(eposy[i]==1){behav[i]=2;}}
+                else if(behav[i]==2){eposy[i]++;if(eposy[i]==299){behav[i]=0;}}
+            }
+            ctx.fillStyle="#66FF00";
+            if(score>m){m=score;document.getElementById('mm').innerHTML="Max: "+m;}
+            ctx.fillText(score,50,280);
+            ctx.fillText("[NWTE]",740,280);
+        }
+    </script>
+</html>
